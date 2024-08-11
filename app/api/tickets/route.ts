@@ -2,6 +2,97 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Ticket:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           format: int32
+ *         title:
+ *           type: string
+ *         status:
+ *           type: string
+ *         description:
+ *           type: string
+ *           nullable: true
+ *         contact_information:
+ *           type: string
+ *           nullable: true
+ */
+
+/**
+ * @swagger
+ * /api/tickets:
+ *   get:
+ *     summary: Retrieve a list of tickets
+ *     parameters:
+ *       - name: title
+ *         in: query
+ *         description: Filter by ticket title
+ *         required: false
+ *         schema:
+ *           type: string
+ *       - name: status
+ *         in: query
+ *         description: Filter by ticket status
+ *         required: false
+ *         schema:
+ *           type: string
+ *       - name: sort
+ *         in: query
+ *         description: Sort tickets by field
+ *         required: false
+ *         schema:
+ *           type: string
+ *           enum: [created_at, updated_at]
+ *       - name: page
+ *         in: query
+ *         description: Page number for pagination
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           format: int32
+ *       - name: size
+ *         in: query
+ *         description: Number of tickets per page
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           format: int32
+ *     responses:
+ *       '200':
+ *         description: A list of tickets
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 entities:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Ticket'
+ *                 page_information:
+ *                   type: object
+ *                   properties:
+ *                     count:
+ *                       type: integer
+ *                       format: int32
+ *                     page:
+ *                       type: integer
+ *                       format: int32
+ *                     last_page:
+ *                       type: integer
+ *                       format: int32
+ *                     size:
+ *                       type: integer
+ *                       format: int32
+ *       '500':
+ *         description: Internal server error
+ */
 export async function GET(req: Request) {
     try {
         const url = new URL(req.url)
@@ -45,6 +136,27 @@ export async function GET(req: Request) {
     }
 }
 
+/**
+ * @swagger
+ * /api/tickets:
+ *   post:
+ *     summary: Create a new ticket
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Ticket'
+ *     responses:
+ *       '201':
+ *         description: The created ticket
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Ticket'
+ *       '500':
+ *         description: Internal server error
+ */
 export async function POST(req: Request) {
     try {
         const { title, status, description, contact_information } = await req.json()
