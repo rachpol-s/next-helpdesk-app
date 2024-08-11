@@ -1,17 +1,25 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# next-helpdesk-app
 
-## Getting Started
-
-First, run the development server:
+## Build Setup
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# install dependencies
+$ npm install
+
+# start the Docker containers
+$ docker-compose up -d
+
+# register server database at http://localhost:5050 by pgAdmin
+
+# run Prisma migrations to set up database schema
+$ npx prisma migrate dev --name init
+
+# build for production and launch server
+$ npm run build
+$ npm run start
+
+# regenerate the Prisma client after making changes
+$ npx prisma generate
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
